@@ -12,11 +12,15 @@ import victor.training.oo.structural.adapter.external.LdapUserWebserviceClient;
 
 @Slf4j
 @Service
+//User service java smells like a core/Domain Service, and should not be polluted with LDap Thing
 public class UserService {
 	@Autowired
 	private LdapUserWebserviceClient wsClient;
 
 	public void importUserFromLdap(String username) {
+
+		new RuntimeException().printStackTrace(); //HOW to know if u were proxied ?!
+
 		List<LdapUser> list = wsClient.search(username.toUpperCase(), null, null);
 		if (list.size() != 1) {
 			throw new IllegalArgumentException("There is no single user matching username " + username);
